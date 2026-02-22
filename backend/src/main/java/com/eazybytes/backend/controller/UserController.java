@@ -1,5 +1,6 @@
 package com.eazybytes.backend.controller;
 
+import com.eazybytes.backend.dto.UserDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -35,5 +36,10 @@ public class UserController {
     @GetMapping("search")
     public String searchUserWithMultiQueryParams(@RequestParam(required = false, defaultValue = "Guest") String name, @RequestParam String gender){
         return "Searching user with name " + name + " and " + "gender "+ gender;
+    }
+
+    @PostMapping
+    public String createUser(@RequestBody UserDto userDto){
+        return "Creating user with name " + userDto.name() + " and email " + userDto.email() + " and gender " + userDto.gender();
     }
 }
