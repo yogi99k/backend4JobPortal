@@ -1,9 +1,6 @@
 package com.eazybytes.backend.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -33,5 +30,10 @@ public class UserController {
     @GetMapping("{userId}/address/{customerId}")
     public String searchUserAddressrWithMultiPathVariables(@PathVariable Map<String,String> pathVariablesMap){
         return "Fetching post with id " + pathVariablesMap.get("userId") + " for user with id " + pathVariablesMap.get("customerId");
+    }
+
+    @GetMapping("search")
+    public String searchUserWithMultiQueryParams(@RequestParam(required = false, defaultValue = "Guest") String name, @RequestParam String gender){
+        return "Searching user with name " + name + " and " + "gender "+ gender;
     }
 }
