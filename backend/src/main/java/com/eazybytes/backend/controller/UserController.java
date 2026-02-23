@@ -1,7 +1,9 @@
 package com.eazybytes.backend.controller;
 
 import com.eazybytes.backend.dto.UserDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -11,11 +13,15 @@ import java.util.Map;
 public class UserController {
 
     @GetMapping({"{userId}/posts", "{userId}/posts/{postId}"})
-    public String searchUserPostWithMultiPathVariables(@PathVariable("userId") Long userId,@PathVariable (value="postId", required = false) Long postId) {
+    public ResponseEntity<String> searchUserPostWithMultiPathVariables(@PathVariable("userId") Long userId, @PathVariable (value="postId", required = false) Long postId) {
+        String response;
         if (postId == null) {
-            return "Fetching all posts for user with id " + userId;
+            response= "Fetching all posts for user with id " + userId;
+        }else{
+                response= "Fetching post with id " + postId + " for user with id " + userId;
         }
-        return "Fetching post with id " + postId + " for user with id " + userId;
+        //return response;
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping({"{userId}/orders/{orderId}","{userId}"})
@@ -45,11 +51,12 @@ public class UserController {
     }
 
     @PostMapping("request-entity")
-    public String createUserUsingRequestEntity(RequestEntity<UserDto> requestEntity){
+    public ResponseEntity<String> createUserUsingRequestEntity(RequestEntity<UserDto> requestEntity){
         requestEntity.getUrl().getPath();
-        requestEntity.getBody();
+        UserDto body = requestEntity.getBody();
         requestEntity.getUrl().getQuery();
         requestEntity.getHeaders();
-        return "created user with data "+requestEntity.toString();
+//        return "created user with data "+requestEntity.toString();
+        return ResponseEntity.status(HttpStatus.CREATED).body("created user with data "+body.toString());
     }
 }
